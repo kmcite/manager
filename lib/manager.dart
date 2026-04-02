@@ -1,42 +1,19 @@
-import 'dart:io' show Directory;
+import 'package:flutter/material.dart' show StatefulWidget, State;
 
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:uuid/uuid.dart';
-import 'manager.dart';
-
-export 'dart:async';
-export 'dart:convert';
-export 'package:flutter/material.dart';
+/// collection // repository api
 export 'collection.dart';
+export 'model.dart';
+
+/// useful extensions
 export 'extensions.dart';
-export 'package:path/path.dart';
-export 'package:states_rebuilder/states_rebuilder.dart';
+export 'locator.dart';
 
-import 'package:hive_flutter/hive_flutter.dart' as hive;
+/// notifier and notifier provider
+export 'feature.dart';
 
-class HiveStorage implements IPersistStore {
-  late final hive.Box box;
-
-  @override
-  Future<void> init() async {
-    await hive.Hive.initFlutter();
-    final appInfo = await PackageInfo.fromPlatform();
-    box = await hive.Hive.openBox(appInfo.appName);
+extension Listener<T extends StatefulWidget> on State<T> {
+  void listener() {
+    // ignore: invalid_use_of_protected_member
+    if (mounted) setState(() {});
   }
-
-  @override
-  Future<void> delete(String key) async => box.delete(key);
-
-  @override
-  Future<void> deleteAll() async => box.clear();
-
-  @override
-  Object? read(String key) => box.get(key);
-
-  @override
-  Future<void> write<T>(String key, T value) async => box.put(key, value);
 }
-
-late final Directory directory;
-
-String get randomId => Uuid().v4();

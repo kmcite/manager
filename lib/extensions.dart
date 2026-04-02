@@ -1,16 +1,4 @@
-import 'package:provider/provider.dart';
-
-import 'manager.dart';
-
-extension ContextExtensions on BuildContext {
-  T of<T>() {
-    try {
-      return watch();
-    } catch (e) {
-      return read();
-    }
-  }
-}
+import 'package:flutter/material.dart';
 
 extension DynamicExtensions on dynamic {
   Text text({
