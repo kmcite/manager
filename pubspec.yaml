@@ -1,16 +1,12 @@
 name: manager
-description: "yet another state management package"
+description: "yet another dependency injection and architecture enforcement package"
 publish_to: "none"
-version: 3.0.0
+version: 3.13.0
 
 environment:
-  sdk: ">=3.3.0 <4.0.0"
+  sdk: ^3.12.0
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.6
-  uuid: ^4.4.0
-  path_provider: ^2.1.3
-  go_router: ^17.0.1
 flutter:
   uses-material-design: true
