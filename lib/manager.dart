@@ -170,13 +170,11 @@ abstract interface class Disposable {
 /// ===============================================================
 
 extension WidgetUse on Widget {
-  Widget use<T extends Controller>(
+  T use<T extends Controller>(
     ControllerProvider<T> provider,
   ) {
     // Ensures the controller is created before the widget is shown.
     // Returns the original widget unchanged.
-    global.controller(provider);
-
-    return this;
+    return global.controller(provider);
   }
 }
