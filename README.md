@@ -40,7 +40,7 @@ Manager follows a few simple principles.
 Manager encourages a simple layered architecture.
 
 ```
-Presentation
+Controller
       │
       ▼
 Repository
@@ -51,13 +51,13 @@ Service
 
 Dependencies always flow downward.
 
-| Layer | May depend on |
-|--------|---------------|
-| Presentation | Repository |
-| Repository | Service |
-| Service | Nothing |
+| Layer      | May depend on |
+| ---------- | ------------- |
+| Controller | Repository    |
+| Repository | Service       |
+| Service    | Nothing       |
 
-Widgets only access Presentation objects.
+Widgets only access Controller objects.
 
 This prevents circular dependencies and keeps responsibilities well separated.
 
@@ -67,7 +67,7 @@ This prevents circular dependencies and keeps responsibilities well separated.
 
 ```yaml
 dependencies:
-  manager:
+    manager:
 ```
 
 ---
@@ -116,7 +116,7 @@ Create its provider.
 
 ```dart
 final apiServiceProvider =
-    serviceProvider(() => const ApiService());
+    service(() => const ApiService());
 ```
 
 ---
@@ -142,7 +142,7 @@ class UserRepository extends Repository {
 Provide dependencies through the provider.
 
 ```dart
-final userRepositoryProvider = repositoryProvider(
+final userRepositoryProvider = repository(
   (ref) => UserRepository(
     ref(apiServiceProvider),
   ),
@@ -151,15 +151,15 @@ final userRepositoryProvider = repositoryProvider(
 
 ---
 
-# Presentations
+# Controllers
 
-Presentation objects prepare data for the UI.
+Controller objects prepare data for the UI.
 
 They consume Repositories.
 
 ```dart
-class HomePresentation extends Presentation {
-  const HomePresentation(this.repository);
+class HomeController extends Controller {
+  const HomeController(this.repository);
 
   final UserRepository repository;
 
@@ -170,8 +170,8 @@ class HomePresentation extends Presentation {
 Provider:
 
 ```dart
-final homePresentationProvider = presentationProvider(
-  (ref) => HomePresentation(
+final homeControllerProvider = controller(
+  (ref) => HomeController(
     ref(userRepositoryProvider),
   ),
 );
@@ -179,9 +179,9 @@ final homePresentationProvider = presentationProvider(
 
 ---
 
-# Using a Presentation
+# Using a Controller
 
-Widgets only consume Presentation providers.
+Widgets only consume Controller providers.
 
 ```dart
 class HomePage extends StatelessWidget {
@@ -189,11 +189,11 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final presentation =
-        context.use(homePresentationProvider);
+    final controller =
+        context.use(homeControllerProvider);
 
     return Text(
-      presentation.username,
+      controller.username,
     );
   }
 }
