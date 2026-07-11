@@ -1,6 +1,7 @@
 import 'dart:developer' show log;
 import 'package:flutter/foundation.dart' show kDebugMode, protected;
 import 'package:flutter/widgets.dart';
+export 'navigation.dart';
 
 /// ===============================================================
 /// 🔒 CONTAINER & SCOPE
@@ -121,13 +122,11 @@ ServiceProvider<T> serviceProvider<T extends Service>(T Function() create) =>
 
 RepositoryProvider<T> repositoryProvider<T extends Repository>(
   T Function(ServiceRef ref) create,
-) =>
-    RepositoryProvider(create);
+) => RepositoryProvider(create);
 
 PresentationProvider<T> presentationProvider<T extends Presentation>(
   T Function(RepositoryRef ref) create,
-) =>
-    PresentationProvider(create);
+) => PresentationProvider(create);
 
 /// ===============================================================
 /// 🔗 REFERENCES
