@@ -1,14 +1,14 @@
 import 'dart:developer' show log;
 
-export 'navigation.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
-import 'package:flutter/widgets.dart' show Widget;
+import 'package:flutter/material.dart';
+part 'navigation.dart';
 
 /// ===============================================================
 /// 🌍 GLOBAL CONTAINER
 /// ===============================================================
 
-final ProviderContainer global = ProviderContainer();
+final ProviderContainer providerContainer = ProviderContainer();
 
 final class ProviderContainer {
   final Map<Provider<Object>, Object> _instances = {};
@@ -22,13 +22,13 @@ final class ProviderContainer {
 
     if (existing != null) {
       if (kDebugMode) {
-        log('📖 Reading Layer', name: 'Cache → $T');
+        log('🟢 -> READING', name: '$T');
       }
       return existing as T;
     }
 
     if (kDebugMode) {
-      log('🟢 Creating Layer', name: 'Init → $T');
+      log('🟢 -> CREATED', name: '$T');
     }
 
     final created = provider._create(this);
@@ -94,8 +94,11 @@ ServiceProvider<T> service<T extends Service>(
 RepositoryProvider<T> repository<T extends Repository>(
   T Function(ServiceRef ref) create,
 ) => RepositoryProvider(create);
-
+@Deprecated('Use [provider] instead')
 ControllerProvider<T> controller<T extends Controller>(
+  T Function(RepositoryRef ref) create,
+) => ControllerProvider(create);
+ControllerProvider<T> provider<T extends Controller>(
   T Function(RepositoryRef ref) create,
 ) => ControllerProvider(create);
 
@@ -176,6 +179,6 @@ extension WidgetUse on Widget {
   ) {
     // Ensures the controller is created before the widget is shown.
     // Returns the original widget unchanged.
-    return global.controller(provider);
+    return providerContainer.controller(provider);
   }
 }

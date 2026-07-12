@@ -1,12 +1,12 @@
 name: manager
 description: "yet another dependency injection and architecture enforcement package plus navigation extensions"
 publish_to: "none"
-version: 4.0.3
+version: 4.0.4
 
 environment:
-    sdk: ^3.12.0
+  sdk: ^3.12.0
 dependencies:
-    flutter:
-        sdk: flutter
+  flutter:
+    sdk: flutter
 flutter:
-    uses-material-design: true
+  uses-material-design: true

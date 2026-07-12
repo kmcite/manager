@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of 'manager.dart';
 
 extension NavigationContext on BuildContext {
   NavigatorState get navigator => Navigator.of(this);
