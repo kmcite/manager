@@ -2,7 +2,6 @@ import 'dart:developer' show log;
 
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-part 'navigation.dart';
 
 /// ===============================================================
 /// 🌍 GLOBAL CONTAINER
@@ -87,18 +86,14 @@ final class ControllerProvider<T extends Controller> extends Provider<T> {
 /// 🏭 FACTORIES
 /// ===============================================================
 
-ServiceProvider<T> service<T extends Service>(
+ServiceProvider<T> serviceProvider<T extends Service>(
   T Function() create,
 ) => ServiceProvider(create);
 
-RepositoryProvider<T> repository<T extends Repository>(
+RepositoryProvider<T> repositoryProvider<T extends Repository>(
   T Function(ServiceRef ref) create,
 ) => RepositoryProvider(create);
-@Deprecated('Use [provider] instead')
-ControllerProvider<T> controller<T extends Controller>(
-  T Function(RepositoryRef ref) create,
-) => ControllerProvider(create);
-ControllerProvider<T> provider<T extends Controller>(
+ControllerProvider<T> controllerProvider<T extends Controller>(
   T Function(RepositoryRef ref) create,
 ) => ControllerProvider(create);
 
@@ -174,11 +169,6 @@ abstract interface class Disposable {
 /// ===============================================================
 
 extension WidgetUse on Widget {
-  T use<T extends Controller>(
-    ControllerProvider<T> provider,
-  ) {
-    // Ensures the controller is created before the widget is shown.
-    // Returns the original widget unchanged.
-    return providerContainer.controller(provider);
-  }
+  T use<T extends Controller>(ControllerProvider<T> provider) =>
+      providerContainer.controller(provider);
 }

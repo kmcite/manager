@@ -1,7 +1,7 @@
 name: manager
-description: "yet another dependency injection and architecture enforcement package plus navigation extensions"
+description: "yet another dependency injection and architecture enforcement library"
 publish_to: "none"
-version: 4.0.4
+version: 4.0.6
 
 environment:
   sdk: ^3.12.0
