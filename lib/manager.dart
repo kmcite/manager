@@ -31,14 +31,20 @@ final class ProviderContainer {
     }
 
     final created = provider._create(this);
+
+    if (created is Controller) {
+      created.init();
+    }
+
     _instances[provider] = created;
     return created;
   }
 
   void dispose() {
     for (final instance in _instances.values) {
-      if (instance is Disposable) {
-        instance.dispose();
+      switch (instance) {
+        case Controller():
+          instance.dispose();
       }
     }
     _instances.clear();
@@ -119,8 +125,7 @@ final class _ServiceRef implements ServiceRef {
   final ProviderContainer _container;
 
   @override
-  T call<T extends Service>(ServiceProvider<T> provider) =>
-      _container.resolve(provider);
+  T call<T extends Service>(ServiceProvider<T> provider) => _container.resolve(provider);
 }
 
 final class _RepositoryRef implements RepositoryRef {
@@ -129,8 +134,7 @@ final class _RepositoryRef implements RepositoryRef {
   final ProviderContainer _container;
 
   @override
-  T call<T extends Repository>(RepositoryProvider<T> provider) =>
-      _container.resolve(provider);
+  T call<T extends Repository>(RepositoryProvider<T> provider) => _container.resolve(provider);
 }
 
 final class _ControllerRef implements ControllerRef {
@@ -139,8 +143,7 @@ final class _ControllerRef implements ControllerRef {
   final ProviderContainer _container;
 
   @override
-  T call<T extends Controller>(ControllerProvider<T> provider) =>
-      _container.resolve(provider);
+  T call<T extends Controller>(ControllerProvider<T> provider) => _container.resolve(provider);
 }
 
 /// ===============================================================
@@ -157,11 +160,12 @@ abstract class Repository {
 
 abstract class Controller {
   const Controller();
-}
 
-/// Optional automatic disposal.
-abstract interface class Disposable {
-  void dispose();
+  /// Called immediately after the controller is created.
+  void init() {}
+
+  /// Called when the container is disposed.
+  void dispose() {}
 }
 
 /// ===============================================================
